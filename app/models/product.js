@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Product.associate = function(models) {
     Product.belongsToMany(models.Request, { through: 'HasProducts', foreignKey: 'productId', as: 'requests' });
+    Product.belongsToMany(models.Restaurant, { through: 'OffersProducts', foreignKey: 'productId', as: 'restaurants' });
   };
   return Product;
 };
