@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
   );
   Request.associate = function(models) {
     Request.belongsTo(models.Client, { foreignKey: 'clientId', as: 'client' });
+    Request.belongsToMany(models.Product, { through: 'HasProducts', foreignKey: 'requestId', as: 'products' });
+    Request.belongsToMany(models.Deliver, { through: 'DeliversRequests', foreignKey: 'requestId', as: 'deliver' });
   };
   return Request;
 };
