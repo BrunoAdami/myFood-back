@@ -2,10 +2,13 @@
 const express = require('express');
 const { Client, Request, Product, HasProduct, Restaurant, Deliver, Vehicle, DeliversRequest } = require('./app/models');
 const Sequelize = require('sequelize');
+const cors = require('cors');
 
 // Create API express instance
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -24,28 +27,40 @@ app.post('/client', async (req, res) => {
 
 // Fetch data
 
+// SELECT `id`, `name`, `CPF`, `adress`, `phone`, `email` FROM `Clients` AS `Client`;
+
 app.get('/client', async (req, res) => {
-  const clients = await Client.findAll({});
+  const clients = await Client.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
+  res.set('X-Total-Count', clients.length);
+  res.set('Access-Control-Expose-Headers', 'X-Total-Count');
   res.json(clients);
 });
 
 app.get('/deliver', async (req, res) => {
-  const delivers = await Deliver.findAll({});
+  const delivers = await Deliver.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
+  res.set('X-Total-Count', delivers.length);
+  res.set('Access-Control-Expose-Headers', 'X-Total-Count');
   res.json(delivers);
 });
 
 app.get('/product', async (req, res) => {
-  const products = await Product.findAll({});
+  const products = await Product.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
+  res.set('X-Total-Count', products.length);
+  res.set('Access-Control-Expose-Headers', 'X-Total-Count');
   res.json(products);
 });
 
 app.get('/request', async (req, res) => {
-  const requests = await Request.findAll({});
+  const requests = await Request.findAll({ attributes: { exclude: ['createdAt', 'updatedAt', 'clientId'] } });
+  res.set('X-Total-Count', requests.length);
+  res.set('Access-Control-Expose-Headers', 'X-Total-Count');
   res.json(requests);
 });
 
 app.get('/restaurant', async (req, res) => {
-  const restaurants = await Restaurant.findAll({});
+  const restaurants = await Restaurant.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
+  res.set('X-Total-Count', restaurants.length);
+  res.set('Access-Control-Expose-Headers', 'X-Total-Count');
   res.json(restaurants);
 });
 
@@ -72,7 +87,7 @@ app.get('/request/:requestValueMinimum', async (req, res) => {
 
 // Init API
 
-const PORT = 3000;
+const PORT = 5000;
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 
