@@ -25,7 +25,7 @@ app.post('/client', async (req, res) => {
   res.json(client);
 });
 
-// 6 querys de Fetch data
+// 5 querys de Fetch data
 
 // SELECT `id`, `name`, `CPF`, `adress`, `phone`, `email` FROM `Clients` AS `Client`;
 
@@ -64,7 +64,7 @@ app.get('/restaurant', async (req, res) => {
   res.json(restaurants);
 });
 
-// 4 Querys created for demonstration purpose
+// 5 Querys created for demonstration purpose
 
 // SELECT `id`, `name`, `CPF`, `adress`, `phone`, `email`, `createdAt`, `updatedAt` FROM `Clients` AS `Client` WHERE `Client`.`name` = 'clientName';
 
@@ -119,6 +119,26 @@ app.get('/deliver-with-car-model/:model', async (req, res) => {
         model: Vehicle,
         as: 'vehicle',
         where: { model: req.params.model },
+      },
+    ],
+  });
+  res.json(delivers);
+});
+
+// SELECT `Deliver`.`id`, `Deliver`.`phone`, `Deliver`.`CNH`, `Deliver`.`CPF`, `Deliver`.`name`,
+// `Deliver`.`RG`, `Deliver`.`createdAt`, `Deliver`.`updatedAt`, `vehicle`.`id` AS `vehicle.id`,
+// `vehicle`.`kind` AS `vehicle.kind`, `vehicle`.`year` AS `vehicle.year`, `vehicle`.`plate` AS `vehicle.plate`,
+// `vehicle`.`model` AS `vehicle.model`, `vehicle`.`deliverId` AS `vehicle.deliverId`, `vehicle`.`createdAt` AS `vehicle.createdAt`,
+// `vehicle`.`updatedAt` AS `vehicle.updatedAt` FROM `Delivers` AS `Deliver` INNER JOIN `Vehicles` AS `vehicle` ON
+// `Deliver`.`id` = `vehicle`.`deliverId` AND `vehicle`.`year` = 'year';
+
+app.get('/deliver-with-car-year/:year', async (req, res) => {
+  const delivers = await Deliver.findAll({
+    include: [
+      {
+        model: Vehicle,
+        as: 'vehicle',
+        where: { year: req.params.year },
       },
     ],
   });
