@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Deliver.associate = function(models) {
     Deliver.belongsToMany(models.Request, { through: 'DeliversRequests', foreignKey: 'deliverId', as: 'requests' });
-    Deliver.hasOne(models.Vehicle, { as: 'vehicle' });
+    Deliver.hasOne(models.Vehicle, { foreignKey: 'deliverId', as: 'vehicle' });
   };
   return Deliver;
 };
